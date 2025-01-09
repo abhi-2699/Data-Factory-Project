@@ -304,6 +304,30 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TRANSFORMED_PARQUET')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "GEN2_LINKED_SERVICE",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "transformed"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/GEN2_LINKED_SERVICE')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -361,7 +385,8 @@
 					"transformations": [],
 					"scriptLines": [
 						"source(allowSchemaDrift: true,",
-						"     validateSchema: false,",
+						"     validateSchema: true,",
+						"     inferDriftedColumnTypes: true,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> source1",
 						"source1 sink(allowSchemaDrift: true,",
@@ -378,30 +403,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OCCUPATIONS_PARQUET')]",
 				"[concat(variables('factoryId'), '/datasets/TRANSFORMED_PARQUET')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TRANSFORMED_PARQUET')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "GEN2_LINKED_SERVICE",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "transformed"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/GEN2_LINKED_SERVICE')]"
 			]
 		}
 	]

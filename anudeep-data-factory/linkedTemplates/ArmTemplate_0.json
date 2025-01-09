@@ -191,7 +191,8 @@
 					"transformations": [],
 					"scriptLines": [
 						"source(allowSchemaDrift: true,",
-						"     validateSchema: false,",
+						"     validateSchema: true,",
+						"     inferDriftedColumnTypes: true,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> source1",
 						"source1 sink(allowSchemaDrift: true,",
