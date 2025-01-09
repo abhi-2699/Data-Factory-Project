@@ -191,6 +191,9 @@
 					"transformations": [
 						{
 							"name": "derivedColumn1"
+						},
+						{
+							"name": "cast1"
 						}
 					],
 					"scriptLines": [
@@ -213,7 +216,15 @@
 						"          Growth = replace(Growth, '%', ''),",
 						"          Risk = replace(Risk, '%', ''),",
 						"          Risk_voted = replace(Risk_voted, '%', '')) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"derivedColumn1 cast(output(",
+						"          Wage as integer,",
+						"          Growth as decimal(10,2),",
+						"          Risk as decimal(10,2),",
+						"          Risk_voted as decimal(10,2),",
+						"          Score as decimal(10,2)",
+						"     ),",
+						"     errors: true) ~> cast1",
+						"cast1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
 						"     umask: 0022,",
