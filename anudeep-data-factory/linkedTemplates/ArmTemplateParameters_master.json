@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "anudeep-data-factory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"GEN2_LINKED_SERVICE_accountKey": {
+			"value": ""
+		},
+		"GEN2_LINKED_SERVICE_properties_typeProperties_url": {
+			"value": "https://anudeepterraformstorage.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
