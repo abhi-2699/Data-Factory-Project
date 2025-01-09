@@ -188,14 +188,28 @@
 							"name": "sink1"
 						}
 					],
-					"transformations": [],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
 					"scriptLines": [
-						"source(allowSchemaDrift: true,",
+						"source(output(",
+						"          Occupation as string,",
+						"          Wage as string,",
+						"          Growth as string,",
+						"          Risk as string,",
+						"          Risk_voted as string,",
+						"          Score as string,",
+						"          Popularity as integer",
+						"     ),",
+						"     allowSchemaDrift: true,",
 						"     validateSchema: true,",
 						"     inferDriftedColumnTypes: true,",
 						"     ignoreNoFilesFound: false,",
 						"     format: 'parquet') ~> source1",
-						"source1 sink(allowSchemaDrift: true,",
+						"source1 derive(Score = substring(Score, 1, 3)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     format: 'parquet',",
 						"     umask: 0022,",
