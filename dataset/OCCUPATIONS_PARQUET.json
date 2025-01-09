@@ -1,0 +1,19 @@
+{
+	"name": "OCCUPATIONS_PARQUET",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "GEN2_LINKED_SERVICE",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "processed"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
