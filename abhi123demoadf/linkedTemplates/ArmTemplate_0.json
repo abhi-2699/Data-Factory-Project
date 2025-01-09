@@ -123,7 +123,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Copy_rwb",
+						"name": "Load Data",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
@@ -133,16 +133,7 @@
 							"secureOutput": false,
 							"secureInput": false
 						},
-						"userProperties": [
-							{
-								"name": "Source",
-								"value": "dataset//occupations.csv"
-							},
-							{
-								"name": "Destination",
-								"value": "output//"
-							}
-						],
+						"userProperties": [],
 						"typeProperties": {
 							"source": {
 								"type": "DelimitedTextSource",
@@ -152,8 +143,7 @@
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
-									"skipLineCount": 0
+									"type": "DelimitedTextReadSettings"
 								}
 							},
 							"sink": {
@@ -169,7 +159,6 @@
 								}
 							},
 							"enableStaging": false,
-							"validateDataConsistency": false,
 							"translator": {
 								"type": "TabularTranslator",
 								"typeConversion": true,
