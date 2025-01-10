@@ -1,0 +1,22 @@
+{
+	"name": "TRANSFORMED_CSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "GEN2_LINKED_SERVICE",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "transformed"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
