@@ -1,0 +1,56 @@
+{
+	"name": "OCCUPATIONS_CSV",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "GEN2_LINKED_SERVICE",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "occupations.csv",
+				"fileSystem": "raw"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "#",
+				"type": "String"
+			},
+			{
+				"name": "Occupation",
+				"type": "String"
+			},
+			{
+				"name": "Median wage (US)",
+				"type": "String"
+			},
+			{
+				"name": "Projected growth (by 2031)",
+				"type": "String"
+			},
+			{
+				"name": "Risk level",
+				"type": "String"
+			},
+			{
+				"name": "Risk level (voted)",
+				"type": "String"
+			},
+			{
+				"name": "Job score",
+				"type": "String"
+			},
+			{
+				"name": "Popularity(100 is most viewed)",
+				"type": "String"
+			}
+		]
+	}
+}

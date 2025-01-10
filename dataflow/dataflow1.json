@@ -1,0 +1,71 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "OCCUPATIONS_PARQUET",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRANSFORMED_CSV",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "cast1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Occupation as string,",
+				"          Wage as string,",
+				"          Growth as string,",
+				"          Risk as string,",
+				"          Risk_voted as string,",
+				"          Score as string,",
+				"          Popularity as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: true,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false,",
+				"     format: 'parquet') ~> source1",
+				"source1 derive(Score = substring(Score, 1, 3),",
+				"          Wage = replace(Wage, ',', ''),",
+				"          Growth = replace(Growth, '%', ''),",
+				"          Risk = replace(Risk, '%', ''),",
+				"          Risk_voted = replace(Risk_voted, '%', '')) ~> derivedColumn1",
+				"derivedColumn1 cast(output(",
+				"          Wage as integer,",
+				"          Growth as decimal(10,2),",
+				"          Risk as decimal(10,2),",
+				"          Risk_voted as decimal(10,2),",
+				"          Score as decimal(10,2)",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"cast1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     format: 'parquet') ~> sink1"
+			]
+		}
+	}
+}

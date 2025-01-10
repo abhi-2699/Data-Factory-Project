@@ -1,0 +1,176 @@
+{
+	"name": "ELT_JOBTREND_PIPELINE",
+	"properties": {
+		"activities": [
+			{
+				"name": "01_CSV_TO_PARQUET",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "PreserveHierarchy"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Occupation",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Occupation",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Median wage (US)",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Wage",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Projected growth (by 2031)",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Growth",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Risk level",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Risk",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Risk level (voted)",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Risk_voted",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Job score",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Score",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Popularity(100 is most viewed)",
+									"type": "Int16",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Popularity",
+									"physicalType": "UTF8"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "OCCUPATIONS_CSV",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OCCUPATIONS_PARQUET",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "TRANSFORMATIONS",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "01_CSV_TO_PARQUET",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow1",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
