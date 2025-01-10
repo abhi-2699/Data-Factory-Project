@@ -140,7 +140,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/TRANSFORMED_PARQUET')]",
+			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -149,13 +149,16 @@
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
-				"type": "Parquet",
+				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
 						"fileSystem": "transformed"
 					},
-					"compressionCodec": "snappy"
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
 				},
 				"schema": []
 			},
@@ -182,7 +185,7 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "TRANSFORMED_PARQUET",
+								"referenceName": "DelimitedText1",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
@@ -226,18 +229,18 @@
 						"     errors: true) ~> cast1",
 						"cast1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     format: 'parquet',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     format: 'parquet') ~> sink1"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/OCCUPATIONS_PARQUET')]",
-				"[concat(variables('factoryId'), '/datasets/TRANSFORMED_PARQUET')]"
+				"[concat(variables('factoryId'), '/datasets/DelimitedText1')]"
 			]
 		},
 		{
